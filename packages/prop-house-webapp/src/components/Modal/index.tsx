@@ -1,22 +1,18 @@
 import classes from './Modal.module.css';
 import ReactDOM from 'react-dom';
-import xIcon from '../../assets/icons/x-icon.png';
+import xIcon from '../../assets/x-icon.png';
 import React from 'react';
 
-export const Backdrop: React.FC<{ onDismiss: () => void }> = (props) => {
+export const Backdrop: React.FC<{ onDismiss: () => void }> = props => {
   return <div className={classes.backdrop} onClick={props.onDismiss} />;
 };
 
-export interface ModalData {
-  title: string;
-  content: React.ReactNode;
-  onDismiss: () => void;
-}
-
 const ModalOverlay: React.FC<{
-  data: ModalData;
-}> = (props) => {
-  const { title, content, onDismiss } = props.data;
+  title?: React.ReactNode;
+  content?: React.ReactNode;
+  onDismiss: () => void;
+}> = props => {
+  const { title, content, onDismiss } = props;
   return (
     <div className={classes.modal}>
       <button className={classes.closeButton} onClick={onDismiss}>
@@ -29,18 +25,20 @@ const ModalOverlay: React.FC<{
 };
 
 const Modal: React.FC<{
-  data: ModalData;
-}> = (props) => {
-  const { data } = props;
+  title?: React.ReactNode;
+  content?: React.ReactNode;
+  onDismiss: () => void;
+}> = props => {
+  const { title, content, onDismiss } = props;
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop onDismiss={data.onDismiss} />,
-        document.getElementById('backdrop-root')!
+        <Backdrop onDismiss={onDismiss} />,
+        document.getElementById('backdrop-root')!,
       )}
       {ReactDOM.createPortal(
-        <ModalOverlay data={data} />,
-        document.getElementById('overlay-root')!
+        <ModalOverlay title={title} content={content} onDismiss={onDismiss} />,
+        document.getElementById('overlay-root')!,
       )}
     </>
   );

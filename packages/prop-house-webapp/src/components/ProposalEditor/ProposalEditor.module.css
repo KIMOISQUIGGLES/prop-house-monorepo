@@ -1,57 +1,60 @@
-.inputLabel {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--brand-gray);
-}
-.inputGroup {
-  margin-top: 2rem;
-}
-.inputSection {
-  margin: 3rem 0rem;
+.proposalEditor {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
+  border: 1px solid #aaa !important;
+  border-radius: 0.25rem !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.inputInfo {
-  display: flex;
-  margin: 0rem 1rem;
-  justify-content: space-between;
-  align-items: center;
-}
-.inputChars {
-  font-size: 14px;
-  color: var(--brand-gray);
-}
-.inputError {
-  color: red;
-  font-weight: 600;
-  margin-left: 1rem;
-  padding: 0.5rem 0rem;
-  margin-bottom: 0rem;
-}
-.input {
+.titleInput,
+.bodyInput {
+  padding: 0;
   border: none;
-  font-size: 20px;
-  color: var(--brand-black);
-  margin-bottom: 1.75rem;
-  white-space: pre-line;
-  border-radius: 20px;
-  border: 1px rgba(0, 0, 0, 0.1) solid;
-  padding: 1.5rem;
-  margin-bottom: 0rem;
-}
-.input:focus {
-  box-shadow: none;
-  border: 1px rgba(0, 0, 0, 0.1) solid;
+  width: 100% !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.input::placeholder {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--brand-black-transparent);
+.titleInput {
+  font-size: 1.25rem;
 }
 
-.descriptionInput {
-  height: 15rem;
+.bodyInput {
+  min-height: 340px !important;
 }
-.quillArea {
+
+.divider {
   width: 100%;
+  margin: 0 0 0.5rem 0;
+}
+
+.previewArea {
+  padding: 0.5rem 1rem 1rem 1rem;
+  border: 1px solid #aaa !important;
+  border-radius: 0.25rem !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.markdown h1 {
+  font-size: 1.7rem;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.markdown h2 {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.markdown h3 {
+  font-size: 1.3rem;
+}
+
+.markdown img {
+  max-width: 100%;
+  height: auto;
 }

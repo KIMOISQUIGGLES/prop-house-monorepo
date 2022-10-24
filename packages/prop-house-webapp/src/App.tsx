@@ -1,85 +1,81 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect } from 'react';
+import { ChainId, useEthers } from '@usedapp/core';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { setActiveAccount } from './state/slices/account';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { setAlertModal } from './state/slices/application';
+import classes from './App.module.css';
 import '../src/css/globals.css';
-import { Suspense, useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import AlertModal from './components/Modal';
 import NavBar from './components/NavBar';
-import Home from './components/pages/Home';
-import Create from './components/pages/Create';
-import House from './components/pages/House';
-import Proposal from './components/pages/Proposal';
+import NetworkAlert from './components/NetworkAlert';
 import Footer from './components/Footer';
-import './App.css';
-import { Mainnet, DAppProvider, Config } from '@usedapp/core';
-import FAQ from './components/pages/FAQ';
-import LoadingIndicator from './components/LoadingIndicator';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import NotFound from './components/NotFound';
-import Round from './components/pages/Round';
-import bgColorForPage from './utils/bgColorForPage';
-import clsx from 'clsx';
-import OpenGraphHouseCard from './components/OpenGraphHouseCard';
-import OpenGraphRoundCard from './components/OpenGraphRoundCard';
-import OpenGraphProposalCard from './components/OpenGraphProposalCard';
-
-const config: Config = {
-  readOnlyChainId: Mainnet.chainId,
-  readOnlyUrls: {
-    [Mainnet.chainId]: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_PROJECT_ID}`,
-  },
-  autoConnect: false,
-};
+import AuctionPage from './pages/Auction';
+import GovernancePage from './pages/Governance';
+import CreateProposalPage from './pages/CreateProposal';
+import VotePage from './pages/Vote';
+import NoundersPage from './pages/Nounders';
+import NotFoundPage from './pages/NotFound';
+import Playground from './pages/Playground';
+import Leaderboard from './pages/Leaderboard';
+import Settlements from './pages/Settlements';
+import Unminted from './pages/Unminted';
+import { CHAIN_ID } from './config';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { AvatarProvider } from '@davatar/react';
+import dayjs from 'dayjs';
 
 function App() {
-  const location = useLocation();
-  const [noActiveCommunity, setNoActiveCommunity] = useState(false);
+  const { account, chainId, library } = useEthers();
+  const dispatch = useAppDispatch();
+  dayjs.extend(relativeTime);
 
   useEffect(() => {
-    setNoActiveCommunity(false);
+    // Local account array updated
+    dispatch(setActiveAccount(account));
+  }, [account, dispatch]);
 
-    if (!location.state) {
-      setNoActiveCommunity(true);
-    }
-  }, [noActiveCommunity, location.state]);
+  const alertModal = useAppSelector(state => state.application.alertModal);
 
-  const openGraphCardPath = new RegExp('.+?/card').test(location.pathname);
-  const noNavPath = location.pathname === '/' || location.pathname === '/faq';
-
-  return openGraphCardPath ? (
-    <Routes>
-      <Route path="/proposal/:id/card" element={<OpenGraphProposalCard />} />
-      <Route path="/round/:id/card" element={<OpenGraphRoundCard />} />
-      <Route path="/house/:id/card" element={<OpenGraphHouseCard />} />
-    </Routes>
-  ) : (
-    <DAppProvider config={config}>
-      <Suspense fallback={<LoadingIndicator />}>
-        <div className={clsx(bgColorForPage(location.pathname), 'wrapper')}>
-          {!noNavPath && <NavBar />}
-
-          <Routes>
-            <Route path="/" element={<Home />} />
+  return (
+    <div className={`${classes.wrapper}`}>
+      {Number(CHAIN_ID) !== chainId && <NetworkAlert />}
+      {alertModal.show && (
+        <AlertModal
+          title={alertModal.title}
+          content={<p>{alertModal.message}</p>}
+          onDismiss={() => dispatch(setAlertModal({ ...alertModal, show: false }))}
+        />
+      )}
+      <BrowserRouter>
+        <AvatarProvider
+          provider={chainId === ChainId.Mainnet ? library : undefined}
+          batchLookups={true}
+        >
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={AuctionPage} />
+            <Redirect from="/auction/:id" to="/noun/:id" />
             <Route
-              path="/create"
-              element={
-                <ProtectedRoute noActiveCommunity={noActiveCommunity}>
-                  <Create />
-                </ProtectedRoute>
-              }
+              exact
+              path="/noun/:id"
+              render={props => <AuctionPage initialAuctionId={Number(props.match.params.id)} />}
             />
-
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/proposal/:id" element={<Proposal />} />
-            <Route path="/:house" element={<House />} />
-            <Route path="/:house/:title" element={<Round />} />
-            <Route path="/:house/:title/:id" element={<Proposal />} />
-
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-
+            <Route exact path="/nounders" component={NoundersPage} />
+            <Route exact path="/create-proposal" component={CreateProposalPage} />
+            <Route exact path="/vote" component={GovernancePage} />
+            <Route exact path="/vote/:id" component={VotePage} />
+            <Route exact path="/playground" component={Playground} />
+            <Route exact path="/leaderboard" component={Leaderboard} />
+            <Route exact path="/settlements" component={Settlements} />
+            <Route exact path="/unminted" component={Unminted} />
+            <Route component={NotFoundPage} />
+          </Switch>
           <Footer />
-        </div>
-      </Suspense>
-    </DAppProvider>
+        </AvatarProvider>
+      </BrowserRouter>
+    </div>
   );
 }
 

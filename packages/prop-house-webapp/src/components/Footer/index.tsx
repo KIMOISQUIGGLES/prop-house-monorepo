@@ -1,34 +1,26 @@
 import classes from './Footer.module.css';
-import clsx from 'clsx';
-import { useLocation } from 'react-router-dom';
-import bgColorForFooter from '../../utils/bgColorForFooter';
-import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
-import { externalURL, ExternalURL } from '../../utils/externalURLs';
+import { Container } from 'react-bootstrap';
+import { buildEtherscanAddressLink } from '../../utils/etherscan';
+import { externalURL, ExternalURL } from '../../utils/externalURL';
+import config from '../../config';
+import Link from '../Link';
+import { Trans } from '@lingui/macro';
 
 const Footer = () => {
-  const location = useLocation();
-
   const twitterURL = externalURL(ExternalURL.twitter);
   const discordURL = externalURL(ExternalURL.discord);
-  const githubURL = externalURL(ExternalURL.github);
+  const etherscanURL = buildEtherscanAddressLink(config.addresses.nounsToken);
 
   return (
-    <div className={clsx(classes.footerContainer, bgColorForFooter(location.pathname))}>
-      <div className={classes.footer}>
-        <a href={twitterURL} target="_blank" rel="noreferrer">
-          <FaTwitter />
-        </a>
-
-        <a href={discordURL} target="_blank" rel="noreferrer">
-          <FaDiscord />
-        </a>
-
-        <a href={githubURL} target="_blank" rel="noreferrer">
-          <FaGithub />
-        </a>
-      </div>
+    <div className={classes.wrapper}>
+      <Container className={classes.container}>
+        <footer className={classes.footerSignature}>
+          <Link text={<Trans>Discord</Trans>} url={discordURL} leavesPage={true} />
+          <Link text={<Trans>Twitter</Trans>} url={twitterURL} leavesPage={true} />
+          <Link text={<Trans>Etherscan</Trans>} url={etherscanURL} leavesPage={true} />
+        </footer>
+      </Container>
     </div>
   );
 };
-
 export default Footer;

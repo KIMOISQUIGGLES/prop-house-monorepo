@@ -1,101 +1,103 @@
-.navbar {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+.navBarBrand {
+  position: relative;
+  z-index: 2;
+  padding: 1rem 0rem;
+  transition: all 0.15s ease-in-out;
 }
 
-.navBarCollapse {
-  display: flex;
-  align-items: center;
+.navBarBrand:hover {
+  transform: scale(0.95);
 }
 
-@media (max-width: 993px) {
-  .navBarCollapse {
-    margin-top: 15px;
+.navBarLogo {
+  width: 75px;
+  height: 75px;
+}
+
+.navBarCustom {
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 992px) {
+  .navBarLogo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .navBarCustom {
+    margin-bottom: -1px;
+    margin-right: -5px;
+    padding-bottom: 0rem;
   }
 }
 
-.navbarBrand {
-  color: var(--brand-black);
+/* connect button displays differently to default NavBarItems, thus the !importants */
+.connectBtn {
+  cursor: pointer;
+}
+
+.connectBtn:hover,
+.connectBtn:active,
+.connectBtn:focus {
+  cursor: pointer !important;
+}
+
+.disconnectBtn {
+  cursor: pointer;
+  font-family: 'PT Root UI';
   font-weight: bold;
-  font-size: 22px;
-  text-decoration: none;
 }
 
-.navbarBrand:hover {
-  color: var(--brand-black);
+.disconnectBtn:hover,
+.disconnectBtn:active,
+.disconnectBtn:focus {
+  cursor: pointer !important;
 }
 
-.navbar-toggler {
-  border-radius: 10px !important;
+.greenStatusCircle {
+  display: relative;
+  width: 10px;
+  height: 10px;
+  background-color: #7fc59c;
+  border-radius: 50%;
+  margin-right: -30px;
+  margin-left: 20px;
+  margin-top: -20px;
+  z-index: 3;
 }
 
-@media (max-width: 991px) {
-  .menuLink {
-    border: 1px solid var(--border-med);
-    border-radius: 10px;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 5px;
-  }
-  .link {
-    display: block;
-  }
+.nounsNavLink,
+.nounsNavLink:active,
+.nounsNavLink:visited {
+  font-family: 'PT Root UI';
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.3rem !important;
+  color: black !important;
 }
 
-.link {
-  font-weight: 600;
+.testnetImg {
+  width: auto;
+  height: 45px;
 }
 
-.link:hover {
-  text-decoration: none;
-  color: var(--brand-black);
-}
-
-.buttonGroup {
+.addressNavLink {
+  position: relative;
   display: flex;
-}
-@media (max-width: 991px) {
-  .buttonGroup {
-    gap: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-@media (min-width: 992px) {
-  .divider {
-    border: 1px solid var(--border-light);
-    border-radius: 1px;
-  }
-  .link {
-    margin-right: 0.75rem;
-  }
-  .menuLink {
-    padding-left: 0rem !important;
-    padding-right: 0.75rem !important;
-  }
-  .menuLink:nth-child(2) {
-    padding-right: 0rem !important;
-  }
-}
-.poweredByNouns {
-  color: var(--brand-black-transparent);
-  font-weight: 550;
-  font-size: 14px;
-  margin-top: -0.3rem;
-}
-
-.poweredByNouns a {
-  color: var(--brand-pink);
-  text-decoration: none;
-}
-
-.bulbImg {
-  height: 50px;
-  width: 50px;
-}
-.logoGroup {
-  display: flex;
-  gap: 10px;
+  flex-direction: row;
   align-items: center;
+}
+
+.brandAndTreasuryWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBarToggle {
+  border-radius: 10px;
+  height: 44px;
+  padding: 0.25rem 0.5rem;
+  margin-right: 12px;
 }
